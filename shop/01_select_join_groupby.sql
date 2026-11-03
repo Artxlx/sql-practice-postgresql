@@ -18,3 +18,12 @@ FROM shop.customers
 WHERE city = 'Jurmala'
   AND registration_date > '2024-12-31'
   AND registration_date < '2026-01-01';
+
+-- 1.3 Отменённые заказы за сентябрь 2026 (оценка доли отмен).
+-- order_ts это TIMESTAMP: начало периода включаем (>=), конец не включаем (<) и берём 1-е число следующего месяца.
+-- '> 2026-08-31' захватил бы заказы 31 августа после 00:00:00.
+SELECT order_id, customer_id, status
+FROM shop.orders
+WHERE order_ts >= '2026-09-01'
+  AND order_ts <  '2026-10-01'
+  AND status = 'cancelled';
