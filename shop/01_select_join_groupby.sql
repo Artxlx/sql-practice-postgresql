@@ -27,3 +27,8 @@ FROM shop.orders
 WHERE order_ts >= '2026-09-01'
   AND order_ts <  '2026-10-01'
   AND status = 'cancelled';
+
+-- 1.4 Сколько всего клиентов и сколько из Латвии (одним запросом, без GROUP BY).
+SELECT count(*) AS all_customers,
+       count(*) FILTER (WHERE country = 'Latvia') AS lv_customers
+FROM shop.customers;
