@@ -36,3 +36,10 @@ FROM shop.customers;
 -- 1.5 Уникальные способы оплаты (для настройки платёжного шлюза).
 SELECT DISTINCT payment_method
 FROM shop.orders;
+
+-- 1.6 Клиенты, у которых имя начинается на 'An'.
+-- ILIKE = LIKE без учёта регистра (только PostgreSQL). Результат тот же, что у LIKE 'An%' (102 строки),
+-- но ILIKE ловит и 'an', 'AN', если в данных регистр сломан. LIKE 'an%' дал бы 0.
+SELECT first_name, last_name, city
+FROM shop.customers
+WHERE first_name ILIKE 'an%';
