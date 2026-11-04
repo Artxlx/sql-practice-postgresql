@@ -32,3 +32,7 @@ WHERE order_ts >= '2026-09-01'
 SELECT count(*) AS all_customers,
        count(*) FILTER (WHERE country = 'Latvia') AS lv_customers
 FROM shop.customers;
+
+-- 1.5 Уникальные способы оплаты (для настройки платёжного шлюза).
+SELECT DISTINCT payment_method
+FROM shop.orders;
