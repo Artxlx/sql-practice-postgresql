@@ -65,3 +65,14 @@ FROM shop.order_items oi
 INNER JOIN shop.products p ON p.product_id = oi.product_id
 ORDER BY oi.order_id DESC, p.product_id, oi.order_item_id
 LIMIT 30;
+
+-- 2.3 Товары с категорией и поставщиком. Почему у двух товаров нет категории?
+-- У товаров 13 и 41 category_id = NULL (ошибка данных), а NULL ничему не равно, поэтому пары в categories нет.
+-- LEFT JOIN categories: 60 строк, у двух category_name = NULL. INNER JOIN дал бы 58 и молча потерял бы эти товары
+-- (в отчёте «выручка по категориям» это занизило бы итог, см. 7.6).
+-- suppliers: INNER JOIN достаточно (supplier_id NOT NULL + FK), LEFT дал бы те же 60 строк.
+SELECT p.product_name, c.name AS category_name, s.name AS supplier_name
+FROM shop.products p
+INNER JOIN shop.suppliers s ON s.supplier_id = p.supplier_id
+LEFT JOIN shop.categories c ON c.category_id = p.category_id
+ORDER BY p.product_id;
