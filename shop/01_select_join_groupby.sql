@@ -55,3 +55,13 @@ FROM shop.orders o
 INNER JOIN shop.customers c ON c.customer_id = o.customer_id
 ORDER BY o.order_ts DESC, o.order_id
 LIMIT 20;
+
+-- 2.2 Позиции заказов: номер заказа, товар, количество, цена на момент покупки (первые 30 строк).
+-- INNER JOIN: у каждой позиции есть товар (product_id NOT NULL + FK), LEFT дал бы те же 15356 строк.
+-- Третий ключ сортировки order_item_id (PK) нужен, потому что в одном заказе один товар может встретиться дважды
+-- (таких пар order_id + product_id в базе 370), и без него порядок на этих строках не гарантирован.
+SELECT oi.order_id, p.product_name, oi.quantity, oi.unit_price
+FROM shop.order_items oi
+INNER JOIN shop.products p ON p.product_id = oi.product_id
+ORDER BY oi.order_id DESC, p.product_id, oi.order_item_id
+LIMIT 30;
