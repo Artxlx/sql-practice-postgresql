@@ -43,3 +43,15 @@ FROM shop.orders;
 SELECT first_name, last_name, city
 FROM shop.customers
 WHERE first_name ILIKE 'an%';
+
+
+-- ===== 2. JOIN =====
+
+-- 2.1 Последние 20 заказов с именем и фамилией клиента.
+-- INNER JOIN: у каждого заказа есть клиент (customer_id NOT NULL + FK), LEFT дал бы те же 6000 строк.
+-- «Последние» = ORDER BY order_ts DESC (order_id со временем не связан). Второй ключ order_id делает порядок стабильным.
+SELECT o.order_id, o.order_ts, c.first_name, c.last_name
+FROM shop.orders o
+INNER JOIN shop.customers c ON c.customer_id = o.customer_id
+ORDER BY o.order_ts DESC, o.order_id
+LIMIT 20;
