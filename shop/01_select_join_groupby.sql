@@ -86,3 +86,13 @@ FROM shop.customers c
 LEFT JOIN shop.orders o ON o.customer_id = c.customer_id
 WHERE o.customer_id IS NULL
 ORDER BY c.customer_id;
+
+-- 2.5 Товары, которые ни разу не покупали (кандидаты на вывод из каталога).
+-- Результат: 0 строк, каждый из 60 товаров есть хотя бы в одной позиции заказа (проверено и с учётом отменённых заказов).
+-- order_items это позиции заказа (order_id NOT NULL + FK на orders), отдельной «корзины» в схеме нет,
+-- поэтому второй JOIN с orders не нужен. Левая таблица products, у товаров без пары oi.order_item_id = NULL.
+SELECT p.product_id, p.product_name, p.price
+FROM shop.products p
+LEFT JOIN shop.order_items oi ON oi.product_id = p.product_id
+WHERE oi.order_item_id IS NULL
+ORDER BY p.product_id;
