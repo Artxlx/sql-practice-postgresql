@@ -76,3 +76,13 @@ FROM shop.products p
 INNER JOIN shop.suppliers s ON s.supplier_id = p.supplier_id
 LEFT JOIN shop.categories c ON c.category_id = p.category_id
 ORDER BY p.product_id;
+
+-- 2.4 Клиенты, которые ни разу не делали заказ (для рассылки-напоминания).
+-- Связь хранится в orders.customer_id. LEFT JOIN оставляет всех клиентов, а у тех, у кого пары в orders нет,
+-- колонки orders = NULL. Фильтр IS NULL (не = NULL) оставляет только их. Проверять можно любую NOT NULL колонку orders:
+-- customer_id (NOT NULL) и order_id (PK) дают те же 4 строки.
+SELECT c.customer_id, c.first_name, c.last_name, c.email
+FROM shop.customers c
+LEFT JOIN shop.orders o ON o.customer_id = c.customer_id
+WHERE o.customer_id IS NULL
+ORDER BY c.customer_id;
