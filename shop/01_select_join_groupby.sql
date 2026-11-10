@@ -96,3 +96,11 @@ FROM shop.products p
 LEFT JOIN shop.order_items oi ON oi.product_id = p.product_id
 WHERE oi.order_item_id IS NULL
 ORDER BY p.product_id;
+
+-- 2.6 Подкатегории и их категории верхнего уровня (self-join: categories соединяется сама с собой).
+-- Связь: parent_id ребёнка = category_id родителя (а не parent_id = parent_id, это склеило бы «сестёр»).
+-- INNER JOIN, чтобы верхние категории (parent_id IS NULL) не попали в список: 9 строк. LEFT дал бы 13 с пустыми родителями.
+SELECT c.name AS subcategory_name, p.name AS parent_name
+FROM shop.categories c
+INNER JOIN shop.categories p ON c.parent_id = p.category_id
+ORDER BY p.name, c.name;
