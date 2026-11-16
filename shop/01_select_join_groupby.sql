@@ -104,3 +104,17 @@ SELECT c.name AS subcategory_name, p.name AS parent_name
 FROM shop.categories c
 INNER JOIN shop.categories p ON c.parent_id = p.category_id
 ORDER BY p.name, c.name;
+
+
+-- ===== 3. GROUP BY / агрегаты / HAVING =====
+
+-- 3.1 Выручка по месяцам, только доставленные заказы.
+-- Фильтр по статусу в WHERE (до группировки), группировка по месяцу, сортировка по нему же.
+-- Внимание: последние доставленные заказы датированы 17 сентября 2026 (позднее заказы shipped/pending),
+-- поэтому сентябрь в этом отчёте неполный и занижен относительно августа.
+SELECT date_trunc('month', order_ts)::date AS month,
+       sum(total_amount) AS revenue
+FROM shop.orders
+WHERE status = 'delivered'
+GROUP BY 1
+ORDER BY 1;
