@@ -1,6 +1,8 @@
 # sql-practice-postgresql
 PostgreSQL practice for junior data analyst roles: JOINs, CTEs, window functions, data quality checks
 
+> **This is a refresher, not learning SQL from scratch.** I'm revisiting and sharpening SQL I already know to get back in shape for junior data analyst roles. Comments in the files mention the pitfalls I ran into (date boundaries, JOIN types, NULLs).
+
 sql-practice-postgresql/
 ├── README.md
 ├── setup/learning_db.sql

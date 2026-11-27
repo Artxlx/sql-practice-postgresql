@@ -118,3 +118,14 @@ FROM shop.orders
 WHERE status = 'delivered'
 GROUP BY 1
 ORDER BY 1;
+
+-- 3.2 Количество заказов и средний чек по способу оплаты (самый популярный способ первым).
+-- Сортировка по количеству заказов, а не по среднему чеку: «популярный» = больше заказов.
+-- Открытый вопрос бизнесу: считать ли отменённые заказы (status = 'cancelled') в количестве и среднем чеке.
+-- Сейчас входят все 6000 заказов.
+SELECT payment_method,
+       count(order_id) AS orders_cnt,
+       round(avg(total_amount), 2) AS avg_order_amount
+FROM shop.orders
+GROUP BY payment_method
+ORDER BY orders_cnt DESC;
